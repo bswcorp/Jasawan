@@ -1,0 +1,30 @@
+name: "Daily Check — Infra Engineer"
+description: "CI, staging infra, dan build verification tasks"
+title: "Daily Check — Infra Engineer — {{date}}"
+labels:
+  - daily-check
+  - infra
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "## Daily Checklist\nPeriksa CI, runner, staging VM, dan Docker build."
+  - type: checkboxes
+    attributes:
+      label: "Tasks"
+      options:
+        - label: "Confirm CI workflow runs for feature branch"
+          value: ci_run
+        - label: "Inspect build logs for Go and Docker"
+          value: inspect_build
+        - label: "Ensure runners have required caches and resources"
+          value: runners_check
+  - type: input
+    attributes:
+      label: "CI failures summary (paste)"
+      placeholder: "Kosong jika tidak ada"
+      name: ci_failures
+  - type: textarea
+    attributes:
+      label: "Infra actions required"
+      name: infra_actions
