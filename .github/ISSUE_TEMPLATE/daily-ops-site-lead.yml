@@ -1,0 +1,30 @@
+name: "Daily Check — Ops Site Lead"
+description: "Hardware, provisioning, dan drill readiness tasks"
+title: "Daily Check — Ops Site Lead — {{date}}"
+labels:
+  - daily-check
+  - ops
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "## Daily Checklist\nVerifikasi hardware staging, battery, provisioning scripts, dan drill."
+  - type: checkboxes
+    attributes:
+      label: "Tasks"
+      options:
+        - label: "Verify staging hardware status"
+          value: hw_status
+        - label: "Confirm provisioning scripts are secret-free"
+          value: prov_scripts
+        - label: "Schedule or confirm next drill"
+          value: schedule_drill
+  - type: input
+    attributes:
+      label: "Battery/UPS health summary"
+      placeholder: "Contoh: 95% charge, nominal"
+      name: battery_health
+  - type: textarea
+    attributes:
+      label: "Next drill schedule"
+      name: drill_schedule
