@@ -1,0 +1,30 @@
+name: "Daily Check — Security Lead"
+description: "Checklist harian untuk audit keamanan dan policy verification"
+title: "Daily Check — Security Lead — {{date}}"
+labels:
+  - daily-check
+  - security
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "## Daily Checklist\nJalankan audit dependensi, cek OPA tests, dan catat temuan."
+  - type: checkboxes
+    attributes:
+      label: "Tasks"
+      options:
+        - label: "Run dependency audit (`go list -m -u all`)"
+          value: dep_audit
+        - label: "Check CI results for `opa test` and unit tests"
+          value: ci_check
+        - label: "Verify no hardcoded credentials in recent commits"
+          value: secret_check
+  - type: input
+    attributes:
+      label: "Critical dependency updates (paste)"
+      placeholder: "List paket yang perlu perhatian"
+      name: critical_deps
+  - type: textarea
+    attributes:
+      label: "Findings and recommended mitigations"
+      name: findings
