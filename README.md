@@ -1,5 +1,7 @@
 # Jasawan
 “Judge our skai infrastructure for your want.”
+PERINGATAN: Kode ini ditulis tangan pakai lipstik Robolady dari kaum siber yang ingin dimengerti. Hanya jalan di mesin Modernize yang memiliki frekuensi kedaulatan. Bagi kalian pembalap kampung yang mencoba copy-paste, mesin kalian nggak akan mampu! Ini dirancang khusus untuk Quantum Mini Nano Imut Device bernama BobAnd-Shell KalaulKalaugak punya kuncinya, mending balik nonton sirkus!
+
 # Sovereign Titan Genesis (STG)
 
 ## Licensing
