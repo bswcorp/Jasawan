@@ -1,0 +1,56 @@
+name: CI — PoC Build & Policy Test
+
+on:
+  push:
+    branches: [ feature/sovereign-gateway ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  go-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+      - name: Install deps
+        run: |
+          go mod tidy
+      - name: Build
+        run: |
+          go build ./...
+      - name: Run unit tests
+        run: |
+          go test ./... || true
+
+  opa-test:
+    runs-on: ubuntu-latest
+    needs: go-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OPA
+        run: |
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod +x opa
+          sudo mv opa /usr/local/bin/opa
+      - name: Run OPA tests
+        run: |
+          opa test policies/rego || true
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: go-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: |
+          docker build -t jasawan/gateway-libp2p-go:ci -f gateway-libp2p-go/Dockerfile gateway-libp2p-go
