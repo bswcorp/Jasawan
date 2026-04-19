@@ -1,0 +1,10 @@
+{
+  "action": "export",
+  "artifact": {
+    "type": "AksaraArtifact"
+  },
+  "meta": {
+    "consent_for_export": true,
+    "provenance_valid": true
+  }
+}
