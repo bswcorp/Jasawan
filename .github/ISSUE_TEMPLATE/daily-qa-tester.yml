@@ -1,0 +1,26 @@
+name: "Daily Check — QA Tester"
+description: "Testing dan verifikasi PoC"
+title: "Daily Check — QA Tester — {{date}}"
+labels:
+  - daily-check
+  - qa
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "## Daily Checklist\nUnit tests, policy tests, E2E smoke, dan hasil pengujian."
+  - type: checkboxes
+    attributes:
+      label: "Tasks"
+      options:
+        - label: "Run unit tests: `go test ./...`"
+          value: unit_tests
+        - label: "Run policy tests: `opa test policies/rego`"
+          value: opa_tests
+        - label: "Execute E2E smoke: publish MQTT → artifact → sign → libp2p delivery"
+          value: e2e_smoke
+  - type: textarea
+    attributes:
+      label: "Test results summary"
+      placeholder: "Latency, errors, dan catatan"
+      name: test_summary
