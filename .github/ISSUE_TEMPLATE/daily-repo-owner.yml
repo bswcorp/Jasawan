@@ -1,0 +1,38 @@
+name: "Daily Check — Repo Owner"
+description: "Checklist harian untuk pemilik repo / koordinator proyek"
+title: "Daily Check — Repo Owner — {{date}}"
+labels:
+  - daily-check
+  - repo-owner
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "## Daily Checklist\nIsi checklist harian untuk Repo Owner. Centang item yang selesai."
+  - type: checkboxes
+    attributes:
+      label: "Tasks"
+      options:
+        - label: "Pull latest main and rebase feature branches"
+          value: rebase
+        - label: "Verify feature/sovereign-gateway is up to date with main"
+          value: verify_branch
+        - label: "Review open PRs and ensure PR body includes pre-merge checklist"
+          value: review_prs
+        - label: "Assign reviewers: security, infra, ethics"
+          value: assign_reviewers
+  - type: input
+    attributes:
+      label: "Secret scan command output (paste)"
+      description: "Hasil `git grep -n \"KEY|SECRET|PASSWORD\"`"
+      placeholder: "no matches"
+      name: secret_scan
+  - type: textarea
+    attributes:
+      label: "Blockers"
+      description: "Tuliskan blocker jika ada"
+      name: blockers
+  - type: textarea
+    attributes:
+      label: "Action items for today"
+      name: actions
