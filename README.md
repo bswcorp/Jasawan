@@ -195,5 +195,162 @@ def on_mqtt(client, userdata, msg):
 
 # bootstrap libp2p node and mqtt client
 
+###Here‑Doc Commands Ready only for my own terminal !!!
+you should don't used like do.
+why? cause this script just run only in my machinery , can't run well in yours 🏛️ classical machine kecuali kamu gunakan mesin dari zaman barok !
+(L😆L)
+
+# Run from repo root in UserLAnd
+git checkout -b feature/sovereign-gateway
+mkdir -p docs/bridge gateway/adapter gateway/sync policies docs/blueprint
+
+cat > docs/bridge/README.md <<'EOF'
+# Azure to SKAI Migration Bridge Design
+
+## Goals
+- Provide a robust, auditable, and sovereign translation layer between cloud protocols and SKAI protocols.
+- Preserve Aksara Nusantara as canonical representation for cultural data at gateway level.
+- Ensure offline operation and secure reconciliation after connectivity restoration.
+
+## Components
+- Gateway Adapter: containerized translator for cloud protocols to SKAI artifacts.
+- Sync Engine: queueing, DTN bundling, libp2p transport, Merkle reconciliation.
+- Local KMS: HSM or secure element for signing and key protection.
+- Policy Gate: OPA enforcement of Prohibited Uses and automatic containment.
+- Telemetry & Audit: local Prometheus + signed append-only logs.
+
+## Protocol Mapping
+| Cloud Protocol | Gateway Function | SKAI Protocol |
+|---|---:|---|
+| MQTT / AMQP | Ingest, auth mapping, sign | libp2p stream; DTN bundle |
+| HTTPS REST | Ingest, validate, sign | libp2p stream; CRDT update |
+| Azure IoT Twin | Translate twin state to CRDT | CRDT merge + Merkle anchoring |
+
+## Aksara Nusantara Integration
+- Canonical Aksara Payload: JSON-LD wrapper with id, script, content, meta, signature.
+- Transliteration Layer: reversible transliteration to Latin only with consent.
+- Rendering: glyph sequences stored locally; rendering performed locally.
+
+## Security Model
+- Keys: private keys in HSM/secure element; Shamir backup across trusted nodes.
+- Identity: DID for gateway and nodes; VC for attestation.
+- Policy: OPA Rego rules run on every inbound/outbound artifact; violations trigger containment and Ethics Board notification.
+- Anchoring: Merkle root of signed snapshots can be anchored to cloud only when policy permits.
+
+## PoC Bootstrap Steps
+1. Provision gateway host with Docker.
+2. Install HSM emulator or secure element.
+3. Deploy gateway/adapter and gateway/sync containers.
+4. Configure Azure IoT connection string in adapter env.
+5. Start libp2p node on gateway and a minimal SKAI node locally.
+6. Simulate cloud outage and validate store-and-forward and reconciliation.
+
+## Metrics and Acceptance
+- RTO for core services <= 15 minutes.
+- Critical service uptime on local power 72 hours.
+- No critical data loss after reconciliation.
+EOF
+
+cat > gateway/adapter/Dockerfile <<'EOF'
+FROM python:3.11-slim
+WORKDIR /app
+COPY main.py /app/main.py
+RUN pip install paho-mqtt libp2p  # placeholder, adjust to real libs
+CMD ["python", "main.py"]
+EOF
+
+cat > gateway/adapter/main.py <<'EOF'
+# Minimal Gateway Adapter pseudocode
+# NOTE: This is a skeleton for PoC. Replace pseudocode libs with real implementations.
+
+import json
+import time
+
+def extract_meta(payload):
+    # parse payload and extract minimal metadata
+    return {"provenance_valid": True, "purpose": "telemetry"}
+
+def sign(payload):
+    # placeholder: call to HSM to sign
+    return "SIGNED_PAYLOAD"
+
+def create_aksara_artifact(payload, signature, meta):
+    artifact = {
+        "@context": "https://skai.jasawan/contexts/aksara.jsonld",
+        "id": "did:skai:gw:artifact:" + str(int(time.time())),
+        "type": "AksaraArtifact",
+        "script": "AksaraNusantara",
+        "glyphs": payload.decode('utf-8') if isinstance(payload, bytes) else str(payload),
+        "provenance": {"issuedAt": time.strftime("%Y-%m-%dT%H:%M:%SZ")},
+        "signature": signature
+    }
+    return artifact
+
+def on_mqtt_message(topic, payload):
+    meta = extract_meta(payload)
+    # policy evaluation placeholder
+    allow = True
+    if not allow:
+        print("Policy denied")
+        return
+    signed = sign(payload)
+    artifact = create_aksara_artifact(payload, signed, meta)
+    # send over libp2p or queue for DTN
+    print("Artifact ready", artifact)
+
+if __name__ == "__main__":
+    print("Gateway Adapter skeleton started")
+    # Replace with real MQTT subscription and libp2p send logic
+EOF
+
+cat > gateway/sync/Dockerfile <<'EOF'
+FROM python:3.11-slim
+WORKDIR /app
+COPY sync.py /app/sync.py
+RUN pip install  # add required libs
+CMD ["python", "sync.py"]
+EOF
+
+cat > gateway/sync/sync.py <<'EOF'
+# Minimal Sync Engine pseudocode
+# Handles queueing, DTN bundling, libp2p transport, and Merkle reconciliation.
+
+def queue_artifact(artifact):
+    # store artifact to local queue
+    pass
+
+def send_via_libp2p(peer, artifact):
+    # send artifact to peer
+    pass
+
+def dtn_store_and_forward(bundle):
+    # store bundle and forward when link available
+    pass
+
+if __name__ == "__main__":
+    print("Sync Engine skeleton started")
+EOF
+
+cat > policies/prohibited_uses.rego <<'EOF'
+package skai.policy
+
+default allow = false
+
+deny[msg] {
+  input.action == "ingest"
+  input.meta.purpose == "mass_surveillance"
+  msg = "Prohibited: mass surveillance ingestion"
+}
+
+allow {
+  input.action == "ingest"
+  input.meta.provenance_valid == true
+  not deny[_]
+}
+EOF
+
+git add docs/bridge gateway policies || true
+git commit -m "feat: add sovereign gateway bridge docs and adapter/sync skeleton with policy template" || true
+git push origin feature/sovereign-gateway || true
 
 
