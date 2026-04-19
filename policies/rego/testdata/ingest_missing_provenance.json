@@ -1,0 +1,7 @@
+{
+  "action": "ingest",
+  "meta": {
+    "purpose": "telemetry",
+    "provenance_valid": false
+  }
+}
