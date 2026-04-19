@@ -1,0 +1,28 @@
+name: "Daily Check — Dev Lead"
+description: "Tugas harian untuk Dev Lead: libp2p, adapter, dan HSM integration"
+title: "Daily Check — Dev Lead — {{date}}"
+labels:
+  - daily-check
+  - dev
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: "## Daily Checklist\nReview PR, integrasi OPA, stub HSM, dan smoke tests."
+  - type: checkboxes
+    attributes:
+      label: "Tasks"
+      options:
+        - label: "Review PRs for code quality and placeholders"
+          value: pr_review
+        - label: "Ensure OPA call integrated before signing"
+          value: opa_integration
+        - label: "Replace SIGNATURE_PLACEHOLDER with HSM stub in staging"
+          value: hsm_stub
+        - label: "Harden libp2p host creation (security, transports, discovery)"
+          value: libp2p_hardening
+  - type: textarea
+    attributes:
+      label: "Local smoke test results"
+      placeholder: "Paste output atau ringkasan"
+      name: smoke_results
