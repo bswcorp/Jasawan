@@ -1,0 +1,53 @@
+{
+  "name": "Daily Check — Repo Owner",
+  "description": "Checklist harian untuk pemilik repo / koordinator proyek",
+  "title": "Daily Check — Repo Owner — {{date}}",
+  "labels": ["daily-check", "repo-owner"],
+  "body": [
+    {
+      "type": "markdown",
+      "attributes": {
+        "value": "## Daily Checklist\nIsi checklist harian untuk Repo Owner. Centang item yang selesai."
+      }
+    },
+    {
+      "type": "checkbox",
+      "attributes": {
+        "label": "Pull latest main and rebase feature branches",
+        "name": "rebase"
+      }
+    },
+    {
+      "type": "checkbox",
+      "attributes": {
+        "label": "Verify feature/sovereign-gateway is up to date with main",
+        "name": "verify_branch"
+      }
+    },
+    {
+      "type": "input",
+      "attributes": {
+        "label": "Secret scan command output (paste)",
+        "description": "Hasil `git grep -n \"KEY|SECRET|PASSWORD\"`",
+        "name": "secret_scan",
+        "placeholder": "no matches"
+      }
+    },
+    {
+      "type": "textarea",
+      "attributes": {
+        "label": "Blockers",
+        "name": "blockers",
+        "placeholder": "Tuliskan blocker jika ada"
+      }
+    },
+    {
+      "type": "textarea",
+      "attributes": {
+        "label": "Action items for today",
+        "name": "actions",
+        "placeholder": "Tugas yang harus diselesaikan hari ini"
+      }
+    }
+  ]
+}
