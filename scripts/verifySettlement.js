@@ -1,8 +1,8 @@
 const { run } = require("hardhat");
 
 async function main() {
-  const settlementAddress = process.env.SETTLEMENT_CONTRACT; // alamat kontrak Settlement
-  const paymentToken = process.env.PAYMENT_TOKEN; // alamat token QState/e-Rupiah
+  const settlementAddress = process.env.SETTLEMENT_CONTRACT;
+  const paymentToken = process.env.PAYMENT_TOKEN;
 
   if (!settlementAddress || !paymentToken) {
     throw new Error("❌ SETTLEMENT_CONTRACT atau PAYMENT_TOKEN belum di-set di environment variables");
