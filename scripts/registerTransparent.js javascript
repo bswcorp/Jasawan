@@ -1,0 +1,21 @@
+const { ethers } = require("hardhat");
+
+async function main() {
+  const [owner] = await ethers.getSigners();
+
+  const settlementAddress = process.env.SETTLEMENT_CONTRACT; // alamat kontrak Settlement
+  const Settlement = await ethers.getContractFactory("Settlement");
+  const settlement = Settlement.attach(settlementAddress);
+
+  const account = "VA_OPA_TRANSPARENT_TAX_LEDGER"; // akun halal default
+
+  const tx = await settlement.connect(owner).registerTransparentAccount(account);
+  await tx.wait();
+
+  console.log("✅ Transparent account registered:", account);
+}
+
+main().catch((error) => {
+  console.error("❌ Registration failed:", error);
+  process.exitCode = 1;
+});
