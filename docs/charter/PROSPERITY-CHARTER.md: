@@ -1,0 +1,8 @@
+## Kedaulatan Data
+Data warga adalah milik warga. Sovereign Gateway hanya mengumpulkan dan memproses data sesuai tujuan sah, dengan persetujuan eksplisit, dan audit trail yang dapat diverifikasi. Setiap akses dicatat, setiap ekspor memerlukan consent, dan setiap pelanggaran ditindak dengan transparansi penuh.
+
+## Kedaulatan Ekonomi
+Nilai ekonomi digital dijaga dengan cadangan nyata dan mekanisme vault yang transparan. Tidak ada ruang bagi pajak gelap atau praktik riba; setiap unit e‑Rupiah yang diwakili dalam ekosistem token memiliki jejak audit dan cadangan yang jelas. Likuiditas dijaga, audit dilakukan berkala, dan laporan disampaikan ke regulator.
+
+## Kedaulatan Identitas
+Identitas digital adalah hak individu. Autentikasi untuk operasi sensitif menggunakan mekanisme berlapis (H2K, OPA policy, HSM). Proses pemulihan kunci diatur dengan Shamir shares dan drill berkala. Tidak ada monopoli identitas; setiap warga berdaulat atas dirinya.
