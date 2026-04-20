@@ -1,0 +1,67 @@
+name: Settlement Digital Direct CI
+
+on:
+  push:
+    branches: [ main, feature/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compile contracts
+        run: npx hardhat compile
+
+      - name: Run Solidity tests
+        run: npx hardhat test
+
+  garage-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Pajak Halal Checker
+        run: python3 garage/stg_pajak_halal_checker.py || true
+
+      - name: Run Asset Mapping
+        run: python3 garage/stg_asset_mapping.py || true
+
+      - name: Run Bapas Integrity Audit
+        run: python3 garage/stg_bapas_integrity_cek_ricek.py || true
+
+      - name: Generate Victory Report
+        run: python3 garage/stg_victory_report.py || true
+
+  opa-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install OPA
+        run: |
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64
+          chmod +x opa
+          sudo mv opa /usr/local/bin/opa
+
+      - name: Run OPA tests
+        run: opa test policies/rego -v
