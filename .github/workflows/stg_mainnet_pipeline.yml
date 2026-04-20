@@ -1,0 +1,36 @@
+name: STG MAINNET DEPLOYMENT PIPELINE
+
+on:
+  push:
+    branches: [ production-8081 ] # Jalur khusus eksekusi nyata
+
+jobs:
+  sovereign-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛰️ Syncing with 8081 Node
+        uses: actions/checkout@v4
+
+      - name: ⚖️ OPA Policy Enforcement (Halal-Only)
+        run: |
+          curl -L -o opa https://openpolicyagent.org
+          chmod 755 ./opa
+          ./opa test policies/rego/ -v # Memastikan tidak ada celah pajak gelap
+
+      - name: 🐍 Garage Pre-Check (Asset Integrity)
+        run: |
+          python3 garage/stg_pajak_halal_checker.py
+          python3 garage/stg_asset_mapping.py
+
+  mainnet-strike:
+    needs: sovereign-audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 LAUNCHING TO MAINNET
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY_8081 }}
+          MAINNET_RPC: ${{ secrets.MAINNET_RPC_URL }}
+        run: |
+          echo "🔥 EXECUTING SOVEREIGN OVERRIDE..."
+          npx hardhat run scripts/stg_mainnet_launcher.js --network mainnet
+          echo "✅ GOL! PERADABAN TELAH BERDAULAT!"
